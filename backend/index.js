@@ -1,18 +1,21 @@
-const express = require('express');
-const dotenv = require('dotenv');   
-const cors = require('cors');
-const logger = require('./middlewares/logger');
-const apiKeyMiddleware = require('./middlewares/apiKeyMiddleware');
-const eventsRouter = require('./routes/event');
-const usersRouter = require('./routes/user'); 
+import express from 'express';
+import dotenv from 'dotenv';   
+import cors from 'cors';
+import logger from './middlewares/logger.js';
+import apiKeyMiddleware from './middlewares/apiKeyMiddleware.js';
+import authRoutes from "./routes/auth.js";
+import eventRoutes from "./routes/event.js";
+import usersRoutes from './routes/user.js'; 
+import publicRoutes from './routes/public.js'; 
+import { authenticate } from './config/db.js';
+import { sequelize } from './config/db.js';
+import Event from './models/Event.js';
+import User from './models/User.js';
+import swaggerJsDoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
+import passport from "passport";
 const app = express();
 const PORT = process.env.PORT || 8080;
-const { authenticate } = require('./config/db');
-const { sequelize } = require('./config/db');
-const Event = require('./models/event');
-const User = require('./models/User');
-const swaggerJsDoc = require('swagger-jsdoc');
-const swaggerUi = require('swagger-ui-express');
 const swaggerOptions = {
     swaggerDefinition: {
         openapi: '3.0.0',
@@ -23,7 +26,7 @@ const swaggerOptions = {
         },
         servers: [
             {
-                url: 'http://localhost:5000',
+                url: 'http://localhost:8080/api-docs',
             },
         ],
     },
@@ -33,13 +36,16 @@ const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
 dotenv.config();
 
+app.use(passport.initialize());
+app.use("/auth", authRoutes);
+app.use("/events", eventRoutes);
+app.use('/users', usersRoutes);
+app.use('/public', publicRoutes);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use(express.json());
 app.use(cors());
 app.use(logger);
 app.use(apiKeyMiddleware);
-app.use('/events', eventsRouter);
-app.use('/users', usersRouter);
 
 app.get('/', (req, res) => {
     res.json({ message: 'Сервер работает!' });
@@ -66,9 +72,6 @@ const testDatabaseConnection = async () => {
 };
 
 testDatabaseConnection();
-
-User.hasMany(Event, { foreignKey: 'createdBy', onDelete: 'CASCADE' })
-Event.belongsTo(User, { foreignKey: 'createdBy' })
 
 const syncModels = async () => {
     try {                                

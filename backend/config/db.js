@@ -1,5 +1,5 @@
-const { Sequelize } = require('sequelize'); 
-const dotenv = require('dotenv');          
+import { Sequelize } from 'sequelize'; 
+import dotenv from 'dotenv';                   
 
 dotenv.config();
 
@@ -24,7 +24,8 @@ const authenticate = async () => {
     }
 };
 
-module.exports = {
+export {
     sequelize,
     authenticate,
 };
+

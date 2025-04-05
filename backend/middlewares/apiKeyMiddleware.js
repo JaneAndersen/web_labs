@@ -1,4 +1,6 @@
-require('dotenv').config();
+import dotenv from 'dotenv'
+
+dotenv.config();
 
 const apiKeyMiddleware = (req, res, next) => {
     const apiKey = req.headers['api-key']; 
@@ -10,4 +12,4 @@ const apiKeyMiddleware = (req, res, next) => {
     next();
 };
 
-module.exports = apiKeyMiddleware;
+export default apiKeyMiddleware;

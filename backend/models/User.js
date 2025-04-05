@@ -1,7 +1,7 @@
-const { Sequelize, DataTypes } = require('sequelize');
-const { sequelize } = require('../config/db'); 
+import { Sequelize, DataTypes } from 'sequelize';
+import { sequelize } from '../config/db.js'; 
 
-const User = sequelize.define('User ', {
+const User = sequelize.define('User', {
     id: {
         type: DataTypes.BIGINT,
         autoIncrement: true,
@@ -19,6 +19,10 @@ const User = sequelize.define('User ', {
             isEmail: true, 
         },
     },
+    password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
     createdAt: {
         type: DataTypes.DATE,
         defaultValue: Sequelize.NOW, 
@@ -28,4 +32,8 @@ const User = sequelize.define('User ', {
     timestamps: false, 
 });
 
-module.exports = User;
+User.beforeCreate(async (user) => {
+    user.password = await bcrypt.hash(user.password, 10);
+});
+
+export default User;

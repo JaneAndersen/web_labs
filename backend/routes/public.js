@@ -13,7 +13,7 @@ const router = express.Router();
  * /events:
  *   get:
  *     summary: Получение списка мероприятий
- *     tags: [Events]
+ *     tags: [Public]
  *     parameters:
  *       - in: query
  *         name: page
@@ -36,6 +36,6 @@ const router = express.Router();
  *         description: Ошибка при получении мероприятий
  */
 
-router.get('/', getEvents) 
+router.get('/events', getEvents) 
 
 export default router

@@ -1,6 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
-import { register, login } from '../controllers/authController.js'
+import { register, login, refresh } from '../controllers/authController.js'
 
 dotenv.config();
 const router = express.Router();
@@ -8,7 +8,7 @@ const router = express.Router();
 /**
  * @swagger
  * tags:
- *   name: Events
+ *   name: Auth
  *   description: Управление регистрацией и авторизацией
  */
 
@@ -17,7 +17,7 @@ const router = express.Router();
  * /register:
  *   post:
  *     summary: Регистрация нового пользователя
- *     tags: [Users]
+ *     tags: [Auth]
  *     requestBody:
  *       required: true
  *       content:
@@ -51,7 +51,7 @@ router.post("/register", register)
  * /login:
  *   post:
  *     summary: Вход пользователя
- *     tags: [Users]
+ *     tags: [Auth]
  *     requestBody:
  *       required: true
  *       content:
@@ -76,5 +76,42 @@ router.post("/register", register)
  */
 
 router.post("/login", login) 
+
+/**
+ * @swagger
+ * /refresh:
+ *   post:
+ *     summary: Обновление Access Token
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               token:
+ *                 type: string
+ *             required:
+ *               - token
+ *     responses:
+ *       200:
+ *         description: Успешное обновление Access Token, возвращает новый токен
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 accessToken:
+ *                   type: string
+ *                   example: "new-access-token-here"
+ *       401:
+ *         description: Не авторизован. Refresh Token не предоставлен.
+ *       403:
+ *         description: Запрещено. Refresh Token недействителен или истек.
+ *       500:
+ *         description: Ошибка сервера
+ */
+router.post("/refresh", refresh) 
 
 export default router;

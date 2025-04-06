@@ -37,15 +37,16 @@ const swaggerDocs = swaggerJsDoc(swaggerOptions);
 dotenv.config();
 
 app.use(passport.initialize());
+app.use(express.json());
+app.use(cors());
+app.use(logger);
+app.use(apiKeyMiddleware);
 app.use("/auth", authRoutes);
 app.use("/events", eventRoutes);
 app.use('/users', usersRoutes);
 app.use('/public', publicRoutes);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-app.use(express.json());
-app.use(cors());
-app.use(logger);
-app.use(apiKeyMiddleware);
+
 
 app.get('/', (req, res) => {
     res.json({ message: 'Сервер работает!' });

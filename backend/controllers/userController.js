@@ -18,11 +18,7 @@ export const createUser = async (req, res) => {
         const user = await User.create({ name, email, password });
         res.status(201).json(user);
     } catch (error) {
-        console.error('Ошибка при создании пользователя:', error);
-        if (error.name === 'SequelizeValidationError') {
-            return res.status(400).json({ error: 'Неверные данные' })
-        }
-        res.status(500).json({ error: 'Ошибка сервера.' });
+        next(error);
     }
 };
 
@@ -31,8 +27,7 @@ export const getUser = async (req, res) => {
         const users = await User.findAll();
         res.status(200).json(users);
     } catch (error) {
-        console.error('Ошибка при получении пользователей:', error);
-        res.status(500).json({ error: 'Ошибка сервера.' });
+        next(error);
     }
 };
 

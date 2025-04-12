@@ -1,6 +1,7 @@
 import express from 'express';
 import { createEvent, deleteEvent, getEventById, updateEvent } from '../controllers/eventController.js';
 import passport from '../config/passport.js'
+import apiKeyMiddleware from '../middlewares/apiKeyMiddleware.js';
 const router = express.Router();
 router.use(passport.authenticate("jwt", { session: false}));
 /**
@@ -16,6 +17,8 @@ router.use(passport.authenticate("jwt", { session: false}));
  *   get:
  *     summary: Получение мероприятия по ID
  *     tags: [Events]
+ *     security:
+ *      - ApiKeyAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -32,7 +35,7 @@ router.use(passport.authenticate("jwt", { session: false}));
  *         description: Ошибка при получении мероприятия
  */
 
-router.get('/:id', getEventById)
+router.get('/:id', apiKeyMiddleware, getEventById)
 
 /**
  * @swagger
@@ -40,6 +43,8 @@ router.get('/:id', getEventById)
  *   post:
  *     summary: Создание нового мероприятия
  *     tags: [Events]
+ *     security:
+ *      - ApiKeyAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -65,7 +70,7 @@ router.get('/:id', getEventById)
  *         description: Ошибка при создании мероприятия
  */
 
-router.post('/', createEvent)
+router.post('/', apiKeyMiddleware, createEvent)
 
 /**
  * @swagger
@@ -73,6 +78,8 @@ router.post('/', createEvent)
  *   put:
  *     summary: Обновление мероприятия
  *     tags: [Events]
+ *     security:
+ *      - ApiKeyAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -105,7 +112,7 @@ router.post('/', createEvent)
  *         description: Ошибка при обновлении мероприятия
  */
 
-router.put('/:id',updateEvent)
+router.put('/:id', apiKeyMiddleware, updateEvent)
 
 /**
  * @swagger
@@ -113,6 +120,8 @@ router.put('/:id',updateEvent)
  *   delete:
  *     summary: Удаление мероприятия
  *     tags: [Events]
+ *     security:
+ *      - ApiKeyAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -129,7 +138,7 @@ router.put('/:id',updateEvent)
  *         description: Ошибка при удалении мероприятия
  */
 
-router.delete('/:id', deleteEvent)
+router.delete('/:id', apiKeyMiddleware, deleteEvent)
 
 export default router;
 

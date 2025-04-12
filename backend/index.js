@@ -26,9 +26,18 @@ const swaggerOptions = {
         },
         servers: [
             {
-                url: 'http://localhost:8080/api-docs',
+                url: 'http://localhost:8080/',
             },
         ],
+        components: {
+            securitySchemes: {
+                ApiKeyAuth: {
+                    type: 'apiKey',
+                    in: 'header',
+                    name: 'api-key',
+                },
+            },
+        },
     },
     apis: ['./routes/*.js'], 
 };
@@ -40,13 +49,35 @@ app.use(passport.initialize());
 app.use(express.json());
 app.use(cors());
 app.use(logger);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use(apiKeyMiddleware);
 app.use("/auth", authRoutes);
 app.use("/events", eventRoutes);
 app.use('/users', usersRoutes);
 app.use('/public', publicRoutes);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
+app.use((err, req, res, next) => {
+    if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+        return res.status(400).json({ error: 'Неверный формат JSON.' });
+    }
+    next();
+});
+
+app.use((err, req, res, next) => {
+    if (error.name === 'SequelizeValidationError') {
+        return res.status(400).json({ error: 'Неверные данные' })
+    }
+    next();
+});
+
+app.use((err, req, res, next) => {
+    console.error(err.stack); 
+    res.status(err.status || 500).json({
+        error: {
+            message: err.message || 'Что-то пошло не так. Попробуйте позже.',
+        },
+    });
+});
 
 app.get('/', (req, res) => {
     res.json({ message: 'Сервер работает!' });

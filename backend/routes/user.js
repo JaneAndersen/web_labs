@@ -1,6 +1,7 @@
 import express from 'express';
 import { createUser, getUser } from '../controllers/userController.js';
 import passport from '../config/passport.js'
+import apiKeyMiddleware from '../middlewares/apiKeyMiddleware.js';
 const router = express.Router();
 router.use(passport.authenticate("jwt", { session: false}));
 
@@ -13,10 +14,12 @@ router.use(passport.authenticate("jwt", { session: false}));
 
 /**
  * @swagger
- * /:
+ * /users:
  *   post:
  *     summary: Создание нового пользователя
  *     tags: [Users]
+ *     security:
+ *      - ApiKeyAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -43,14 +46,16 @@ router.use(passport.authenticate("jwt", { session: false}));
  *         description: Ошибка сервера
  */
 
-router.post('/', createUser)
+router.post('/', apiKeyMiddleware, createUser)
 
 /**
  * @swagger
- * /:
+ * /users:
  *   get:
  *     summary: Получение списка пользователей
  *     tags: [Users]
+ *     security:
+ *      - ApiKeyAuth: []
  *     responses:
  *       200:
  *         description: Успешно получен список пользователей
@@ -58,6 +63,6 @@ router.post('/', createUser)
  *         description: Ошибка сервера
  */
 
-router.get('/', getUser)
+router.get('/', apiKeyMiddleware, getUser)
 
 export default router;

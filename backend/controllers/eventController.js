@@ -20,8 +20,7 @@ export const getEvents = async (req, res) => {
             events: rows,
         });
     } catch (error) {
-        console.error('Ошибка при получении мероприятий:', error);
-        res.status(500).json({ error: 'Ошибка при получении мероприятий.' });
+        next(error);
     }
 };
 
@@ -33,8 +32,7 @@ export const getEventById = async (req, res) => {
         }
         res.status(200).json(event);
     } catch (error) {
-        console.error('Ошибка при получении мероприятия:', error);
-        res.status(500).json({ error: 'Ошибка при получении мероприятия.' });
+        next(error);
     }
 };
 
@@ -49,8 +47,7 @@ export const createEvent = async (req, res) => {
         const event = await Event.create({ title, description, date, createdBy });
         res.status(201).json(event);
     } catch (error) {
-        console.error('Ошибка при создании мероприятия:', error);
-        res.status(500).json({ error: 'Ошибка при создании мероприятия.' });
+        next(error);
     }
 };
 
@@ -71,8 +68,7 @@ export const updateEvent = async (req, res) => {
         }
         res.status(200).json({ message: 'Мероприятие обновлено.' });
     } catch (error) {
-        console.error('Ошибка при обновлении мероприятия:', error);
-        res.status(500).json({ error: 'Ошибка при обновлении мероприятия.' });
+        next(error);
     }
 };
 
@@ -87,8 +83,7 @@ export const deleteEvent = async (req, res) => {
         }
         res.status(204).send();
     } catch (error) {
-        console.error('Ошибка при удалении мероприятия:', error);
-        res.status(500).json({ error: 'Ошибка при удалении мероприятия.' });
+        next(error);
     }
 };
 

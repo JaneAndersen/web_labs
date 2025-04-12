@@ -23,8 +23,7 @@ export const register = async (req, res) => {
         const user = await User.create({ name, email, password: hashedPassword });
         res.status(201).json({ message: "Регистрация прошла успешно"});
     } catch (error) {
-        console.error("Ошибка при регистрации:", error); 
-        res.status(500).json({ message: "Ошибка сервера"})
+        next(error);
     }
 };
 
@@ -52,32 +51,36 @@ export const login = async (req, res) => {
 
         res.json({ accessToken, refreshToken });
     } catch (error) {
-        console.error("Ошибка при регистрации:", error);
-        res.status(500).json({ message: "Ошибка сервера" });
+        next(error);
     }
 };
 
 export const refresh = async (req, res) => {
     const { token } = req.body;
 
-    if (!token) {
-        return res.sendStatus(401); 
+    try {
+        if (!token) {
+            return res.sendStatus(401).json({ message: "Введите токен" }); 
+        }
+    
+        const refreshToken = await RefreshToken.findOne({ where: { token } });
+        if (!refreshToken) {
+            return res.sendStatus(403).json({ message: "Токен не обнаружен" }); 
+        }
+    
+        if (new Date() > refreshToken.expiresAt) {
+            await RefreshToken.destroy({ where: { id: refreshToken.id } }); 
+            return res.sendStatus(403).json({ message: "Токен недействителен" }); 
+        }
+    
+        const user = await User.findByPk(refreshToken.userId);
+        const newAccessToken = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: "15m" });
+    
+        res.json({ accessToken: newAccessToken });
+    } catch(error) {
+        next(error);
     }
-
-    const refreshToken = await RefreshToken.findOne({ where: { token } });
-    if (!refreshToken) {
-        return res.sendStatus(403); 
-    }
-
-    if (new Date() > refreshToken.expiresAt) {
-        await RefreshToken.destroy({ where: { id: refreshToken.id } }); 
-        return res.sendStatus(403); 
-    }
-
-    const user = await User.findByPk(refreshToken.userId);
-    const newAccessToken = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: "15m" });
-
-    res.json({ accessToken: newAccessToken });
+    
 };
 
 export default router;

@@ -1,5 +1,6 @@
 import express from 'express';
 import { getEvents } from '../controllers/eventController.js';
+import apiKeyMiddleware from '../middlewares/apiKeyMiddleware.js';
 const router = express.Router();
 
 /**
@@ -14,6 +15,8 @@ const router = express.Router();
  *   get:
  *     summary: Получение списка мероприятий
  *     tags: [Public]
+ *     security:
+ *      - ApiKeyAuth: []
  *     parameters:
  *       - in: query
  *         name: page
@@ -36,6 +39,6 @@ const router = express.Router();
  *         description: Ошибка при получении мероприятий
  */
 
-router.get('/events', getEvents) 
+router.get('/events', apiKeyMiddleware, getEvents) 
 
 export default router

@@ -37,14 +37,14 @@ export const getEventById = async (req, res) => {
 };
 
 export const createEvent = async (req, res) => {
-    const { title, description, date, createdBy } = req.body;
+    const { title, description, date } = req.body;
 
-    if (!title || !date || !createdBy) {
-        return res.status(400).json({ error: 'Поля title, date и createdBy обязательны для заполнения.' });
+    if (!title || !date ) {
+        return res.status(400).json({ error: 'Поля title и date обязательны для заполнения.' });
     }
 
     try {
-        const event = await Event.create({ title, description, date, createdBy });
+        const event = await Event.create({ title, description, date, createdBy: req.user.id });
         res.status(201).json(event);
     } catch (error) {
         next(error);

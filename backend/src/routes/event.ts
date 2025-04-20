@@ -1,9 +1,14 @@
 import express from 'express';
-import { createEvent, deleteEvent, getEventById, updateEvent } from '../controllers/eventController.js';
-import passport from '../config/passport.js'
-import apiKeyMiddleware from '../middlewares/apiKeyMiddleware.js';
+import {
+  createEvent,
+  deleteEvent,
+  getEventById,
+  updateEvent,
+} from '../controllers/eventController';
+import passport from '../config/passport';
+import apiKeyMiddleware from '../middlewares/apiKeyMiddleware';
 const router = express.Router();
-router.use(passport.authenticate("jwt", { session: false}));
+router.use(passport.authenticate('jwt', { session: false }));
 /**
  * @swagger
  * tags:
@@ -35,7 +40,7 @@ router.use(passport.authenticate("jwt", { session: false}));
  *         description: Ошибка при получении мероприятия
  */
 
-router.get('/:id', apiKeyMiddleware, getEventById)
+router.get('/:id', apiKeyMiddleware, getEventById);
 
 /**
  * @swagger
@@ -70,7 +75,7 @@ router.get('/:id', apiKeyMiddleware, getEventById)
  *         description: Ошибка при создании мероприятия
  */
 
-router.post('/', apiKeyMiddleware, createEvent)
+router.post('/', apiKeyMiddleware, createEvent);
 
 /**
  * @swagger
@@ -112,7 +117,7 @@ router.post('/', apiKeyMiddleware, createEvent)
  *         description: Ошибка при обновлении мероприятия
  */
 
-router.put('/:id', apiKeyMiddleware, updateEvent)
+router.put('/:id', apiKeyMiddleware, updateEvent);
 
 /**
  * @swagger
@@ -138,7 +143,6 @@ router.put('/:id', apiKeyMiddleware, updateEvent)
  *         description: Ошибка при удалении мероприятия
  */
 
-router.delete('/:id', apiKeyMiddleware, deleteEvent)
+router.delete('/:id', apiKeyMiddleware, deleteEvent);
 
 export default router;
-

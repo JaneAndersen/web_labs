@@ -1,7 +1,7 @@
-import express from "express";
-import dotenv from "dotenv";
-import { register, login, refresh } from '../controllers/authController.js'
-import apiKeyMiddleware from '../middlewares/apiKeyMiddleware.js';
+import express from 'express';
+import dotenv from 'dotenv';
+import { register, login, refresh } from '../controllers/authController';
+import apiKeyMiddleware from '../middlewares/apiKeyMiddleware';
 
 dotenv.config();
 const router = express.Router();
@@ -47,7 +47,7 @@ const router = express.Router();
  *         description: Ошибка сервера
  */
 
-router.post("/register", apiKeyMiddleware, register)
+router.post('/register', apiKeyMiddleware, register);
 
 /**
  * @swagger
@@ -80,7 +80,7 @@ router.post("/register", apiKeyMiddleware, register)
  *         description: Ошибка сервера
  */
 
-router.post("/login", apiKeyMiddleware, login) 
+router.post('/login', apiKeyMiddleware, login);
 
 /**
  * @swagger
@@ -119,6 +119,6 @@ router.post("/login", apiKeyMiddleware, login)
  *       500:
  *         description: Ошибка сервера
  */
-router.post("/refresh", apiKeyMiddleware, refresh) 
+router.post('/refresh', apiKeyMiddleware, refresh);
 
 export default router;

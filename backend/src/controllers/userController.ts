@@ -1,5 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 import User from '@models/User.js';
+
 const router = express.Router();
 
 export const createUser = async (

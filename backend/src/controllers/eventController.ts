@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import Event from '@models/Event';
 import User from '@models/User';
+
 const router = express.Router();
 
 export const getEvents = async (

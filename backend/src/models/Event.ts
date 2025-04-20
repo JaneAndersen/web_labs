@@ -12,6 +12,7 @@ interface EventAttributes {
 
 export class Event
   extends Model<EventAttributes>
+
   implements EventAttributes
 {
   public id!: bigint;

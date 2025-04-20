@@ -1,7 +1,8 @@
 import express from 'express';
-import { createUser, getUser } from '../controllers/userController';
-import passport from '../config/passport';
-import apiKeyMiddleware from '../middlewares/apiKeyMiddleware';
+import { createUser, getUser } from '@controllers/userController';
+import passport from '@config/passport';
+import apiKeyMiddleware from '@middlewares/apiKeyMiddleware';
+
 const router = express.Router();
 router.use(passport.authenticate('jwt', { session: false }));
 

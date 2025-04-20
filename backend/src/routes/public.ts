@@ -1,6 +1,7 @@
 import express from 'express';
-import { getEvents } from '../controllers/eventController';
-import apiKeyMiddleware from '../middlewares/apiKeyMiddleware';
+import { getEvents } from '@controllers/eventController';
+import apiKeyMiddleware from '@middlewares/apiKeyMiddleware';
+
 const router = express.Router();
 
 /**

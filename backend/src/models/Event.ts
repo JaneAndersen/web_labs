@@ -1,5 +1,5 @@
 import { Model, DataTypes } from 'sequelize';
-import { sequelize } from '../config/db';
+import { sequelize } from '@config/db';
 import User from './User';
 
 interface EventAttributes {
@@ -10,10 +10,9 @@ interface EventAttributes {
   createdBy: bigint;
 }
 
-//interface EventCreationAttributes extends Optional<EventAttributes, 'id'> {}
-
 export class Event
-  extends Model<EventAttributes /* EventCreationAttributes*/>
+  extends Model<EventAttributes>
+
   implements EventAttributes
 {
   public id!: bigint;

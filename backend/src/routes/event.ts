@@ -4,9 +4,9 @@ import {
   deleteEvent,
   getEventById,
   updateEvent,
-} from '../controllers/eventController';
-import passport from '../config/passport';
-import apiKeyMiddleware from '../middlewares/apiKeyMiddleware';
+} from '@controllers/eventController';
+import passport from '@config/passport';
+import apiKeyMiddleware from '@middlewares/apiKeyMiddleware';
 const router = express.Router();
 router.use(passport.authenticate('jwt', { session: false }));
 /**

@@ -1,8 +1,8 @@
 import express, { Request, Response, NextFunction } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import User from '../models/User';
-import RefreshToken from '../models/RefreshToken';
+import User from '@models/User';
+import RefreshToken from '@models/RefreshToken';
 import dotenv from 'dotenv';
 
 dotenv.config();

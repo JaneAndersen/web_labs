@@ -1,7 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import { register, login, refresh } from '../controllers/authController';
-import apiKeyMiddleware from '../middlewares/apiKeyMiddleware';
+import { register, login, refresh } from '@controllers/authController';
+import apiKeyMiddleware from '@middlewares/apiKeyMiddleware';
 
 dotenv.config();
 const router = express.Router();

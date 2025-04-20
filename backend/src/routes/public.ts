@@ -1,14 +1,14 @@
 import express from 'express';
-import { getEvents } from '../controllers/eventController.js';
-import apiKeyMiddleware from '../middlewares/apiKeyMiddleware.js';
+import { getEvents } from '../controllers/eventController';
+import apiKeyMiddleware from '../middlewares/apiKeyMiddleware';
 const router = express.Router();
 
 /**
-  * @swagger
-  * tags:
-  *   name: Public
-  *   description: Публичные маршруты
-  */
+ * @swagger
+ * tags:
+ *   name: Public
+ *   description: Публичные маршруты
+ */
 /**
  * @swagger
  * /events:
@@ -39,6 +39,6 @@ const router = express.Router();
  *         description: Ошибка при получении мероприятий
  */
 
-router.get('/events', apiKeyMiddleware, getEvents) 
+router.get('/events', apiKeyMiddleware, getEvents);
 
-export default router
+export default router;
